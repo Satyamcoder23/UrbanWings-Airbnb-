@@ -1,0 +1,11 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+  <div class="alert alert-danger text-center" role="alert">
+    ⚠️ <strong><%= err.statusCode || 500 %> Error:</strong> <%= err.message || "Something went wrong!" %>
+  </div>
+
+  <div class="text-center">
+    <a href="/" class="btn btn-outline-primary mt-3">⬅️ Back to Home</a>
+  </div>
+</div>

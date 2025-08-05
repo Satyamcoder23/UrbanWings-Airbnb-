@@ -1,0 +1,114 @@
+body {
+ font-family: "Plus Jakarta Sans", sans-serif !important;
+ display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container {
+    flex: 1;
+}
+ .navbar {
+ height: 5rem;
+ background-color: white;
+ }
+
+ .fa-compass{
+    font-size: 2rem;
+    color: #fe424d; /* Tomato color */
+ }
+
+ .nav-link {
+
+    color: #222222 !important; /* Dark gray for better contrast */
+ }
+
+/* footer */
+.f-info-links a{
+    color: #222222 !important; /* Dark gray for better contrast */
+    text-decoration: none;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+}
+.f-info-links , .f-info-socials,.f-info-brand{
+    width: 100%;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.f-info-socials i{
+    margin-right: 1rem;
+        font-size: 1.2rem;
+}
+.f-info{
+    text-align: center;
+    height: 8rem;
+    display: flex;
+    background-color: #ebebeb;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: spce-evenly;
+}
+
+/* cards */
+.listing-card {
+    border: none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body {
+    padding: 0 !important;
+}
+
+.card-text{
+    font-weight: 400 !important;
+}
+
+.listing-link{
+    text-decoration: none !important;
+    color: #222222 !important; /* Dark gray for better contrast */
+}
+
+.card-img-overlay{
+    opacity: 0 !important;
+}
+.card-img-overlay:hover {
+    opacity: 0.2 !important;
+   background-color: white !important;
+}
+
+/* New page */
+.add-btn{
+    background-color:  #fe424d !important; /* Tomato color */
+    border: none !important;
+}
+
+/* Edit page */
+.edit-btn{
+       background-color:  #fe424d !important; /* Tomato color */
+    border: none !important;
+}
+
+/* show page */
+.show-img {
+    height: 30vh !important;
+
+}
+
+/* Sidebar design */
+
+/* public/css/style.css */
+
+.sidebar {
+  height: 400px; /* or use 100vh or flex-based sizing */
+  padding-right: 17px;
+  box-sizing: content-box;
+  overflow-y: scroll !important;
+}

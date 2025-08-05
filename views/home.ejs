@@ -1,0 +1,37 @@
+<% layout('/layouts/boilerplate') %>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Explore Stays Around You</h1>
+  
+  <div class="row">
+    <% listings.forEach(listing => { %>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+          <!-- Listing Image -->
+          <img
+  src="<%= listing.image.url %>"
+  class="card-img-top img-fluid"
+  style="width: 100%; object-fit: cover; height: 250px;"
+  alt="<%= listing.title %>">
+          
+          <div class="card-body">
+            <!-- Listing Title -->
+            <h5 class="card-title"><%= listing.title %></h5>
+            
+            <!-- Listing Description -->
+            <p class="card-text text-muted"><%= listing.description %></p>
+            
+            <!-- Listing Info -->
+            <ul class="list-unstyled small text-secondary">
+              <li><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></li>
+              <li><strong>Price:</strong> $<%= listing.price %><i>/night</i></li>
+            </ul>
+            
+            <!-- CTA Button -->
+            <a href="/listings/<%= listing._id %>" class="btn btn-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>

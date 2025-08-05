@@ -1,0 +1,160 @@
+<% layout('/layouts/boilerplate') %>
+<% const priceINR = listing.price * 82.5; %>
+<% const avgRating = listing.reviews.length
+  ? (listing.reviews.reduce((sum, r) => sum + r.rating, 0) / listing.reviews.length).toFixed(1)
+  : "No ratings yet"; %>
+
+<div class="container py-4">
+  <h1 class="display-6 fw-bold text-primary text-center bg-light py-3 rounded shadow-sm">
+    <%= listing.title %>
+  </h1>
+
+  <div class="row justify-content-center">
+    <div class="card shadow-lg border-0 listing-card" style="width: 26rem;">
+      <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="img-fluid">
+
+      <div class="card-body bg-light">
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">👤 Listed by</label>
+          <p class="card-text">
+            <%= listing.owner?.username || "Unknown Host" %>
+          </p>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">🗒️ Description</label>
+          <p class="card-text"><%= listing.description %></p>
+        </div>  
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">💰 Price</label>
+          <p class="card-text">
+            <span class="badge bg-success">$<%= listing.price %></span>
+            <span class="text-muted ms-2">→ ₹<%= priceINR.toLocaleString("en-IN") %></span> <i>/night</i>
+          </p>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">📍 Location</label>
+          <p class="card-text"><%= listing.location %></p>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">🌐 Country</label>
+          <p class="card-text"><%= listing.country %></p>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">⭐️ Average Rating</label>
+          <p class="card-text"><%= avgRating %></p>
+        </div>
+
+        <% if (currentUser && listing.owner._id.equals(currentUser._id)) { %>
+          <div class="d-flex justify-content-between mt-4">
+            <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary w-50 me-2">✏️ Edit</a>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="w-50">
+              <button class="btn btn-outline-danger w-100">🗑️ Delete</button>
+            </form>
+          </div>
+        <% } %>
+      </div>  
+    </div>
+  </div>
+
+  <!-- Review Form -->
+  <hr class="my-5">
+  <% if (currentUser) { %>
+    <h4 class="text-center mb-4">📝 Leave a Review</h4>
+    <form method="POST" action="/listings/<%= listing._id %>/reviews" class="mt-3 needs-validation" novalidate>
+      <div class="mb-3">
+<fieldset class="starability-slot" role="radiogroup" aria-label="Rating from 1 to 5 stars">
+  <!-- ✅ Hidden zero-star input to prevent layout bugs -->
+  <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" aria-label="No rating." />
+
+  <!-- ✅ First star pre-selected -->
+  <input type="radio" id="first-rate1" name="review[rating]" value="1" checked required />
+  <label for="first-rate1" title="Terrible">1 star</label>
+
+  <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+  <label for="first-rate2" title="Not good">2 stars</label>
+
+  <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+  <label for="first-rate3" title="Average">3 stars</label>
+
+  <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+  <label for="first-rate4" title="Very good">4 stars</label>
+
+  <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+  <label for="first-rate5" title="Amazing">5 stars</label>
+</fieldset>
+      </div>
+      <div class="mb-3">
+  <label for="comment" class="form-label">Comment</label>
+  <textarea
+    id="comment"
+    name="review[comment]"
+    class="form-control"
+    rows="3"
+    maxlength="500"
+    required
+    placeholder="Share your experience..."></textarea>
+  <div class="form-text">Max 500 characters</div>
+  <div class="invalid-feedback">Please provide a comment.</div>
+  <div class="valid-feedback">Looks good!</div>
+</div>
+      <button type="submit" class="btn btn-primary btn-outline-dark">Submit Review</button>
+    </form>
+  <% } %>
+
+   <% if(listing.reviews.length >0) { %>
+  <!-- Reviews Section -->
+  <hr class="my-5">
+  <div class="row justify-content-center">
+     <h4 class="text-center mb-4">🗣️ All Reviews</h4>
+    <% for (let review of listing.reviews) { %>
+      <div class="card col-md-6 mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Reviewed by: <%= review.author?.username || "Anonymous Guest" %></h5>
+          <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+          <p class="card-text"><%= review.comment %></p>
+          <p class="card-text text-muted">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
+          <% if (currentUser && review.author._id.equals(currentUser._id)) { %>
+            <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+              <button class="btn btn-danger btn-sm">🗑️ Delete</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+  <% } %>
+
+  <div class="col-6 offset-3 mb-3">
+  <h3>Where you'll be</h3>
+  <div id="map" style="height: 400px;"></div> <!-- ✅ Changed class to id -->
+</div>
+
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  mapboxgl.accessToken = mapToken;
+
+  // ✅ Use raw array, not stringified
+  const coordinates = [<%= listing.geometry.coordinates[0] %>, <%= listing.geometry.coordinates[1] %>];
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: coordinates,
+    zoom: 10
+  });
+  const popup = new mapboxgl.Popup({ offset: 25 })
+  .setHTML(`
+    <h5 class="mb-1 text-primary"><%= listing.title %></h5>
+    <p class="mb-0">Exact Location will be provided after booking</p>
+  `);
+
+  // ✅ Add marker
+  new mapboxgl.Marker({ color: "red" })
+    .setLngLat(coordinates)
+    .setPopup(popup)
+    .addTo(map);
+</script>
