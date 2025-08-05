@@ -31,15 +31,3 @@ A fully responsive, feature-rich Airbnb-style listing platform built with **Node
 ---
 
 
-## 📦 Installation & Setup
-
-```bash
-# Clone the repo
-git clone https://github.com/your-username/airbnb-clone.git
-cd airbnb-clone
-
-# Install dependencies
-npm install
-
-# Start the server
-node app.js
