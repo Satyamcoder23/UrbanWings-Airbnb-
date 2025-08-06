@@ -32,20 +32,26 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Session config
+const MongoStore = require("connect-mongo");
+
 const sessionOptions = {
-  secret: "thisshouldbeabettersecret", // Use env variable in production!
+  secret: process.env.SESSION_SECRET || "thisshouldbeabettersecret",
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.DB_URL || "mongodb://127.0.0.1:27017/wanderlust",
+    touchAfter: 24 * 3600 // time in seconds
+  }),
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: false, // Set to true in production with HTTPS
+    secure: process.env.NODE_ENV === "production", // true only in production
     maxAge: 1000 * 60 * 60 * 24 * 7
   }
 };
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
+mongoose.connect(process.env.DB_URL || "mongodb://127.0.0.1:27017/wanderlust")
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
