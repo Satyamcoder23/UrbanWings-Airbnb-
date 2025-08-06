@@ -72,11 +72,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// // Home route
-// app.get("/", wrapAsync(async (req, res) => {
-//   const listings = await Listing.find({});
-//   res.render("home", { listings });
-// }));
+// Home route
+app.get("/", wrapAsync(async (req, res) => {
+  const listings = await Listing.find({});
+  res.render("home", { listings });
+}));
 
 // Demo user creation route (remove or protect in production)
 app.get("/DemoUser", async (req, res) => {
