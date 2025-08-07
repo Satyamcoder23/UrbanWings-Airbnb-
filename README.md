@@ -30,4 +30,17 @@ A fully responsive, feature-rich Airbnb-style listing platform built with **Node
 
 ---
 
+## 🌱 Environment Setup
 
+Create a `.env` file based on `.env.example`:
+
+```bash
+cp .env.example .env
+
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_KEY=your_key
+CLOUDINARY_SECRET=your_secret
+MAPBOX_TOKEN=your_mapbox_token
+DB_URL=your_mongo_url
+SESSION_SECRET=your_session_secret
