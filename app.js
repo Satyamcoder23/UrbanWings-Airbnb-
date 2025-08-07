@@ -52,9 +52,11 @@ const sessionOptions = {
 
 // Connect to MongoDB
 mongoose.connect(process.env.DB_URL || "mongodb://127.0.0.1:27017/wanderlust")
-  .then(() => console.log("✅ Connected to MongoDB"))
+  .then(() => {
+    console.log("✅ Connected to MongoDB");
+    console.log("📦 Using DB:", mongoose.connection.name); // 👈 This shows the DB name
+  })
   .catch(err => console.error("❌ MongoDB connection error:", err));
-
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

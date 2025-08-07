@@ -3,13 +3,16 @@ const mongoose = require('mongoose');
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const Listing = require('../models/listing.js');
 const User = require('../models/user.js');
-const sampleListings = require('./data.js'); // ✅ no destructuring
+const sampleListings = require('./data.js');
 
 const geocoder = mbxGeocoding({ accessToken: process.env.MAP_TOKEN });
-const MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust';
+
+// ✅ Use the same DB as your app
+const MONGO_URL = process.env.DB_URL;
 
 main().then(() => {
   console.log("✅ Connected to MongoDB");
+  console.log("📦 Seeding into DB:", mongoose.connection.name);
 }).catch(err => console.error("❌ MongoDB connection error:", err));
 
 async function main() {
@@ -25,7 +28,7 @@ const initDB = async () => {
   if (!user) {
     user = new User({
       username: 'Satyam',
-      email: 'satyam@example.com'
+      email: 'satyam@example.com',
     });
     await user.save();
     console.log("👤 New user created:", user._id);
@@ -46,7 +49,7 @@ const initDB = async () => {
 
     if (!geometry) {
       console.warn(`⚠️ No geometry found for ${fullLocation}`);
-      continue; // Skip this listing
+      continue;
     }
 
     listingsWithOwnerAndGeometry.push({
@@ -58,6 +61,7 @@ const initDB = async () => {
 
   await Listing.insertMany(listingsWithOwnerAndGeometry);
   console.log(`📦 Inserted ${listingsWithOwnerAndGeometry.length} listings with geometry`);
+
   mongoose.connection.close();
 };
 
