@@ -1,58 +1,132 @@
 <style>
-
-/* Nav-bar search-inp */
-
-.btn-search{
+  /* 🔍 Desktop styles */
+  .btn-search {
     background-color: #fe424d;
     color: #fff;
     border-radius: 25px;
-    padding: 0 1rem 0 1rem;
+    padding: 0.3rem 0.8rem;
   }
-  .btn-search:hover{
-     background-color: #fe424d;
+
+  .btn-search:hover {
+    background-color: #e53e44;
     color: #fff;
   }
-   .btn-search i{
+
+  .btn-search i {
     display: inline;
-    margin-right: 0.5rem;
-   }
-   .search-input{
-     border-radius: 25px;
-     padding:0.5rem 3rem 0.5rem 3rem ;
-     font-size: 0.9rem;
-   }
+    margin-right: .5rem;
+  }
+
+  .search-input {
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-box {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 0.4rem;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  flex: 1; /* makes both boxes equal width */
+  text-align: center;
+}
+
+  /* ✅ Mobile styles */
+  @media (max-width: 768px) {
+    .search-input {
+      flex-grow: 1;
+      margin-bottom: 0;
+      width: auto;
+    }
+
+    .btn-search {
+      white-space: nowrap;
+      padding: 0.5rem 1rem;
+    }
+
+    .nav-link {
+      text-align: center;
+      background-color: white;
+      border-radius: 0.3rem;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 0.5rem;
+    }
+
+    .navbar-collapse {
+      margin-top: 1rem;
+    }
+  }
 </style>
 
-
-<nav class="navbar navbar-expand-md bg-body-ligh border-bottom sticky-top">
+<nav class="navbar navbar-expand-md bg-white border-bottom sticky-top shadow-sm px-3 py-2">
   <div class="container-fluid">
     <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <!-- <a class="nav-link" href="/">Home</a> -->
-        <a class="nav-link" href="/listings">Explore</a>
-       </div>
+      <!-- 📱 Mobile layout -->
+      <div class="d-md-none w-100 ">
+        <!-- Row 1: Explore + Airbnb -->
+        <div class="d-flex justify-content-between mb-3 gap-3">
+  <a class="nav-link nav-box" href="/listings">Explore</a>
+  <a class="nav-link nav-box" href="/listings/new">Airbnb your home</a>
+</div>
+        <!-- Row 2: Auth -->
+        <div class="d-flex justify-content-between mb-3 gap-5">
+          <% if (!currentUser) { %>
+            <a class="nav-link w-50" href="/signup"><b>Sign Up</b></a>
+            <a class="nav-link w-50" href="/login"><b>Login</b></a>
+          <% } else { %>
+            <a class="nav-link w-100" href="/logout"><b>Logout</b></a>
+          <% } %>
+        </div>
 
-       <div class=" ms-auto navbar-nav">
-    <form class="d-flex" role="search">
-      <input class="form-control me-2 search-input" type="search" placeholder="Search destination" aria-label="Search"/>
-      <button class="btn btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-    </form>
-  </div>
+        <!-- Row 3: Search -->
+        <form class="d-flex gap-2 mb-3" role="search">
+          <input class="form-control search-input" type="search" placeholder="Search destination" aria-label="Search" />
+          <button class="btn btn-search d-flex align-items-center" type="submit">
+            <i class="fa-solid fa-magnifying-glass me-1"></i>Search
+          </button>
+        </form>
+      </div>
 
-       <div class="navbar-nav ms-auto">
+      <!-- 💻 Desktop layout -->
+      <div class="row w-100 d-none d-md-flex align-items-center">
+        <!-- Left nav -->
+        <div class="col-md-4 d-flex justify-content-start gap-2">
+          <a class="nav-link" href="/listings">Explore</a>
+        </div>
+
+        <!-- Center search -->
+        <div class="col-md-4 d-flex justify-content-center">
+          <form class="d-flex flex-nowrap align-items-center w-100" style="max-width: 400px;" role="search">
+            <input class="form-control search-input me-2" type="search" placeholder="Search destination" aria-label="Search" />
+            <button class="btn btn-search" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>Search
+            </button>
+          </form>
+        </div>
+
+        <!-- Right nav -->
+        <div class="col-md-4 d-flex justify-content-end gap-2">
           <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <% if(!currentUser) {%>
-                  <a class="nav-link" href="/signup"><b>Sign Up</b></a>
-                  <a class="nav-link" href="/login"><b>Login</b></a>
-      <%  }%>
-      <% if(currentUser) {%>
-                   <a class="nav-link" href="/logout"><b>Logout</b></a>
-                   <%} %> 
-       </div> 
+          <% if (!currentUser) { %>
+            <a class="nav-link" href="/signup"><b>Sign Up</b></a>
+            <a class="nav-link" href="/login"><b>Login</b></a>
+          <% } else { %>
+            <a class="nav-link" href="/logout"><b>Logout</b></a>
+          <% } %>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
