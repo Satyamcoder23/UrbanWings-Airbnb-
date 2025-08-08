@@ -4,6 +4,14 @@ require("dotenv").config()
 
 
 const express = require("express");
+const app = express();
+
+// ✅ Lightweight route to keep Render awake — no session, no DB
+app.get("/ping", (req, res) => {
+  res.send("pong");
+});
+
+
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const path = require("path");
@@ -24,7 +32,6 @@ const userRouter = require("./routes/user.js");
 // Middleware
 const wrapAsync = require("./utils/wrapAsync");
 
-const app = express();
 
 // EJS setup
 app.engine("ejs", ejsMate);
